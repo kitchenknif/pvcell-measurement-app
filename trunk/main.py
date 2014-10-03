@@ -21,6 +21,8 @@ class ControlMainWindow(QtGui.QMainWindow):
         # Config Slots
         self.ui.dcRadioButton.toggled.connect(self.switchSweepType)
         #self.ui.pulseRadioButton.toggled.connect(self.switchSweepType)
+        #self.filePath = os.getcwd()
+        self.filePath = "e:\Documents\\"
         
         # Measurement slots
         self.ui.measurementButton.clicked.connect(self.doSweep)
@@ -60,7 +62,7 @@ class ControlMainWindow(QtGui.QMainWindow):
             self.ui.progressBar.setRange(0, 0)
             
             #Legacy just in case
-            if self.ui.legacySweepCheckbox.isChecked():
+            if self.ui.legacySweepCheckbox.isChecked() or self.keithley.type == '2635A':
                 self.doLegacySweep()
             #Full speed ahead =\
             else:            
@@ -130,8 +132,9 @@ class ControlMainWindow(QtGui.QMainWindow):
 
     @pyqtSlot()
     def saveSweep(self):
-        fname = QtGui.QFileDialog.getSaveFileName(self, caption="Save file", directory="e:\Documents\\",
+        fname = QtGui.QFileDialog.getSaveFileName(self, caption="Save file", directory=self.filePath,
                                                   filter="Text Files (*.txt *.dat *.csv)")
+        self.filePath = os.path.dirname(fname)
         f = open(fname, 'w')
         for point in self.data:
             f.write(str(point[0]) + ", " + str(point[1]) + "\n")
