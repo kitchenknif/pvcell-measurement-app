@@ -12,7 +12,7 @@ class Keithley:
             return Keithley_24XX(port, True)
         if "2400" in type:
             return Keithley_24XX(port, False)
-        if "2635a" in type:
+        if "2635A" in type:
             return Keithley_2635a(port, True)
         assert 0, "Bad identification string: " + type
 
@@ -25,6 +25,7 @@ class Keithley_24XX(Keithley):
     """Keithley 24XX I-V Measurement Class"""
 
     def __init__(self, port, supportPulse):
+        self.type = '24XX'
         self.port = port
         self.port.open()
         self.supportPulse = supportPulse
@@ -231,9 +232,10 @@ class Keithley_24XX(Keithley):
 
 # Keithley 2635a
 class Keithley_2635a(Keithley):
-    """Keithley 2635a I-V Measurement Class"""
+    """Keithley 2635A I-V Measurement Class"""
 
     def __init__(self, port, supportPulse):
+        self.type = '2635A'
         self.port = port
         self.port.open()
         self.supportPulse = supportPulse
